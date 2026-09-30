@@ -55,8 +55,19 @@
       <a href="#why">Why us</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" type="button">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#materials">Materials</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#process">Process</a>
+  <a href="#why">Why us</a>
+  <a href="#contact">Contact</a>
+  <a class="mobile-menu-call" href="tel:+919824677051">Call +91 98246 77051</a>
+</nav>
 
 <section class="hero">
   <div class="hero-watermark" aria-hidden="true"><img src="assets/images/hero-watermark.png" alt=""></div>
@@ -64,7 +75,7 @@
     <div class="hero-top hero-top-single">
       <div>
         <h1 class="headline"><span class="hl-word">We Buy.</span><br><span class="hl-word" style="animation-delay:.35s">We Sell.</span><br><em>We Move Metal.</em></h1>
-        <p class="hero-lead">Lalita Metals trades copper, brass, aluminum, stainless steel and more across India.</p>
+        <p class="hero-lead">Lalita Metals trades copper, brass, aluminum, steel, stainless steel and more across India.</p>
         <p class="hero-sub">We deal in industrial scrap, factory-generated material, non-ferrous scrap, ferrous scrap, wires, cables, sheets, castings, turnings and sorted metal lots.</p>
         <p class="hero-focus"><strong>Our focus is simple:</strong> Right material. Right weight. Right price. Right time.</p>
         <div class="hero-cta">
@@ -299,20 +310,24 @@
         </div>
       </div>
 
-      <form onsubmit="return false;">
+      <form id="enquiryForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="ff53014b-04f2-4a3d-a703-771dd435c6d2">
+        <input type="hidden" name="subject" value="New enquiry from Lalita Metals website">
+        <input type="hidden" name="from_name" value="Lalita Metals Website">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="form-row2">
           <div class="field">
             <label for="fname">Name</label>
-            <input id="fname" type="text" placeholder="Your name">
+            <input id="fname" name="name" type="text" placeholder="Your name" required>
           </div>
           <div class="field">
             <label for="fphone">Phone</label>
-            <input id="fphone" type="tel" placeholder="10-digit mobile">
+            <input id="fphone" name="phone" type="tel" placeholder="10-digit mobile" required>
           </div>
         </div>
         <div class="field">
           <label for="fmetal">Metal</label>
-          <select id="fmetal">
+          <select id="fmetal" name="metal">
             <option>Copper</option>
             <option>Brass</option>
             <option>Aluminum</option>
@@ -323,14 +338,14 @@
         </div>
         <div class="field">
           <label for="fqty">Approx. quantity</label>
-          <input id="fqty" type="text" placeholder="e.g. 500 kg, or 10 tonne">
+          <input id="fqty" name="quantity" type="text" placeholder="e.g. 500 kg, or 10 tonne">
         </div>
         <div class="field">
           <label for="fnote">Message</label>
-          <textarea id="fnote" placeholder="Pickup needed? Preferred time?"></textarea>
+          <textarea id="fnote" name="message" placeholder="Pickup needed? Preferred time?"></textarea>
         </div>
-        <a class="btn btn-primary" href="tel:+919824677051" style="width:100%; text-align:center;">Call us to confirm rate</a>
-        <p class="form-note">This form isn't wired to a server yet — for now the button dials the yard directly. Connect it to email or WhatsApp once you're ready to go live.</p>
+        <button type="submit" class="btn btn-primary" id="formSubmitBtn" style="width:100%; text-align:center; cursor:pointer;">Send Enquiry</button>
+        <p class="form-note" id="formNote">We'll call you back after checking your message. For an instant reply, use the call button above.</p>
       </form>
     </div>
   </div>

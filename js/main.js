@@ -283,3 +283,89 @@ try{
     }
   }catch(e){}
 })();
+
+/* ---------- Contact form -> Web3Forms (emails you on submit) ---------- */
+(function(){
+  var form = document.getElementById('enquiryForm');
+  if(!form) return;
+  var btn = document.getElementById('formSubmitBtn');
+  var note = document.getElementById('formNote');
+  var defaultNote = note ? note.textContent : '';
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var key = form.querySelector('[name="access_key"]').value;
+    if(!key || key.indexOf('PASTE_YOUR') === 0){
+      if(note){
+        note.textContent = 'Form setup incomplete — the site owner needs to add a Web3Forms access key.';
+        note.style.color = '#E8611E';
+      }
+      return;
+    }
+
+    btn.disabled = true;
+    var originalLabel = btn.textContent;
+    btn.textContent = 'Sending…';
+    if(note){ note.textContent = ''; }
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.success){
+          form.reset();
+          if(note){
+            note.textContent = "Thanks — your enquiry has been sent. We'll call you back shortly.";
+            note.style.color = 'var(--paper-dim)';
+          }
+        } else {
+          throw new Error(data.message || 'Submission failed');
+        }
+      })
+      .catch(function(){
+        if(note){
+          note.textContent = "Couldn't send right now — please call us directly instead.";
+          note.style.color = '#E8611E';
+        }
+      })
+      .finally(function(){
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+        if(note){
+          setTimeout(function(){
+            note.style.color = '';
+            note.textContent = defaultNote;
+          }, 6000);
+        }
+      });
+  });
+})();
+
+/* ---------- Mobile menu toggle ---------- */
+(function(){
+  var btn = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if(!btn || !menu) return;
+
+  function setOpen(open){
+    btn.classList.toggle('open', open);
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  btn.addEventListener('click', function(){
+    setOpen(!menu.classList.contains('open'));
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setOpen(false); });
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 760) setOpen(false);
+  });
+})();
